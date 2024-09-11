@@ -1,2 +1,2 @@
 # 3D_gas_simulation
-This Python code simulates gas particles in a 3D container, showing their movement and collisions.
+This Python code simulates the molecular dynamics of gas particles in a 3D container. It visualizes the movement and collisions of particles, while dynamically calculating kinetic energy and pressure. The simulation allows interactive control of temperature (via particle speed) and container volume using sliders, providing real-time updates on how these changes affect the system's physical properties. The visualization includes both a 3D particle movement plot and 2D graphs for kinetic energy and pressure over time.
