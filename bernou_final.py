@@ -10,7 +10,7 @@ limites_iniciais = [-10, 10]  # Limites do cubo onde as partículas se movem
 velocidade_max = 1  # Velocidade máxima inicial das partículas
 volume_inicial = (limites_iniciais[1] - limites_iniciais[0]) ** 3  # Volume inicial do recipiente
 num_frames = 100  # Número de frames
-num_fatias_x = 20  # Número de fatias ao longo do eixo X
+num_fatias_x = 100  # Número de fatias ao longo do eixo X
 
 # Inicializa as posições e velocidades das partículas em 3D
 posicoes = np.random.uniform(limites_iniciais[0], limites_iniciais[1], (num_particulas, 3)) # O 3 é para as componentes x, y e z
@@ -45,17 +45,31 @@ def plotar_histograma_velocidades():
     # Para cada partícula, a velocidade tem três componentes: vx, vy e vz. A magnitude da velocidade é então dada pela fórmula: v = sqrt(vx² + vy² + vz²)
     # Valor Máximo Teórico: O valor máximo teórico para a magnitude da velocidade ocorre quando vx = vy = vz = 1, o que resulta em: v_máximo = sqrt(1² + 1² + 1²) = sqrt(3) ≈ 1.732
 
-    # Define o intervalo de velocidades (por exemplo, 20 intervalos)
-    num_bins = 20
-    plt.figure(figsize=(6, 4))
-    
-    # Cria o histograma das magnitudes das velocidades
-    plt.hist(magnitudes_velocidades, bins=num_bins, color='blue', edgecolor='black')
+    # Define o número de bins para o histograma
+    num_bins = num_fatias_x
+    fig, ax = plt.subplots(figsize=(6, 4))  # Cria explicitamente o eixo para o histograma
+
+    # Cria o histograma das magnitudes das velocidades e obtém os valores para as barras
+    contagem, bordas, _ = ax.hist(magnitudes_velocidades, bins=num_bins, color='blue', edgecolor='black')
+
+    # Normaliza as magnitudes das velocidades para o intervalo do colormap
+    norm = plt.Normalize(vmin=magnitudes_velocidades.min(), vmax=magnitudes_velocidades.max())
+    cores = cm.coolwarm(norm((bordas[:-1] + bordas[1:]) / 2))  # Cor baseada no ponto médio de cada intervalo
+
+    # Limpa o gráfico e redesenha o histograma com as cores
+    ax.cla()
+    for i in range(num_bins):
+        ax.bar(bordas[i], contagem[i], width=bordas[i+1] - bordas[i], color=cores[i], edgecolor='black')
 
     # Adiciona títulos e rótulos
-    plt.title('Histograma de Velocidades das Partículas')
-    plt.xlabel('Magnitude da Velocidade')
-    plt.ylabel('Número de Partículas')
+    ax.set_title('Histograma de Velocidades das Partículas')
+    ax.set_xlabel('Magnitude da Velocidade')
+    ax.set_ylabel('Número de Partículas')
+
+    # Adiciona a barra de cores para referência
+    sm = plt.cm.ScalarMappable(cmap='coolwarm', norm=norm)
+    sm.set_array([])
+    fig.colorbar(sm, ax=ax, label='Magnitude da Velocidade')  # Passa explicitamente o eixo
 
     # Exibe o gráfico
     plt.show()
