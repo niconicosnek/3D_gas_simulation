@@ -22,3 +22,7 @@ At the end of the simulation, the code generates:
   A distribution of particles along slices of the X-axis, colored by average velocity.
 
 This allows for visual and quantitative analysis of particle behavior, such as velocity distribution and spatial arrangement.
+
+
+https://github.com/user-attachments/assets/fb8b3f48-acbb-4e4f-b3ba-350f9b97c608
+
